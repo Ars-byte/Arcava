@@ -14,6 +14,10 @@ single self-contained program with no runtime dependencies beyond an optional
    █   █   ▅   ▄      █   ▆  █   ▄    █   ▃   ▂   ▂   ▁   ▁      ▁   ▁      
 ```
 
+## Previews
+
+![Arcava preview](previews/preview.svg)
+
 ## Build
 
 ```sh
