@@ -57,9 +57,10 @@ int main(int argc, char** argv) {
     int barWidth = 1;
     int gap = 1;
     std::string device = "@DEFAULT_MONITOR@";
+    std::string color = "\033[38;5;231m";
 
     int opt;
-    while ((opt = getopt(argc, argv, "r:c:d:b:w:g:h")) != -1) {
+    while ((opt = getopt(argc, argv, "r:c:d:b:w:g:h:C:")) != -1) {
         switch (opt) {
             case 'r': rate = std::atoi(optarg); break;
             case 'c': channels = std::atoi(optarg); break;
@@ -67,6 +68,7 @@ int main(int argc, char** argv) {
             case 'b': bars = std::atoi(optarg); break;
             case 'w': barWidth = std::atoi(optarg); break;
             case 'g': gap = std::atoi(optarg); break;
+            case 'C': color = optarg; break;
             case 'h': usage(argv[0]); return 0;
             case '?': usage(argv[0]); return 1;
         }
@@ -129,7 +131,7 @@ int main(int argc, char** argv) {
 
         analyzer.configure(nb);
         analyzer.process(spec.data(), dt, level);
-        renderFrame(frame, level, width, rows, barWidth);
+        renderFrame(frame, level, width, rows, barWidth, color);
         termWrite(frame.data(), frame.size());
 
         if (!audio.advance()) break;

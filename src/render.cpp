@@ -4,11 +4,10 @@
 
 namespace {
 const char* kBlocks[] = {" ", "\u2581", "\u2582", "\u2583", "\u2584", "\u2585", "\u2586", "\u2587", "\u2588"};
-const char* kColor = "\033[38;5;231m";
 }
 
 void renderFrame(std::string& buf, const std::vector<float>& level,
-                 int width, int rows, int barWidth) {
+                 int width, int rows, int barWidth, const std::string& color) {
     int nb = (int)level.size();
     int totalBar = nb * barWidth;
     int gapBudget = std::max(0, width - totalBar);
@@ -22,7 +21,7 @@ void renderFrame(std::string& buf, const std::vector<float>& level,
 
     int cells = rows * 8;
     for (int r = 0; r < rows; r++) {
-        buf += kColor;
+        buf += color;
         int fromBottom = rows - 1 - r;
         int gi = 0;
         for (int b = 0; b < nb; b++) {
