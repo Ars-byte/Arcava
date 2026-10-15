@@ -94,3 +94,42 @@ ffmpeg -i song.flac -f s16le -ac 2 -ar 44100 - | ./Arcava -r 44100 -c 2
 ```
 
 Press `Ctrl+C` to quit.
+
+## How it works
+
+Audio is read into a sliding window of 4096 samples that advances by
+`rate / 60` samples per frame, giving a 60 fps refresh with overlap. A Hann
+window is applied, an in-place radix-2 FFT is computed, and the magnitude
+spectrum is folded into logarithmically spaced bands. Each band is normalized
+against a decaying peak estimate, gated to remove noise, then passed through a
+parabolic falloff and an IIR integrator so bars rise fast and fall smoothly.
+The result is drawn as Unicode block characters and flushed to the terminal in
+a single write per frame.
+
+## Project layout
+
+```
+.
+├── Makefile
+├── README.md
+├── scripts
+│   └── package-release.sh
+├── src
+│   ├── main.cpp        entry point, CLI and render loop
+│   ├── audio.hpp/.cpp  capture: live parec or stdin PCM
+│   ├── fft.hpp/.cpp    in-place radix-2 FFT
+│   ├── analyzer.hpp/.cpp  bands, normalization and smoothing
+│   ├── render.hpp/.cpp    terminal bar rendering
+│   └── term.hpp/.cpp      terminal size, raw output and signals
+└── previews
+    └── preview.svg
+```
+
+## Requirements
+
+- A C++17 compiler (g++ or clang++)
+- An audio backend providing `parec` for live capture (optional)
+
+## License
+
+MIT
