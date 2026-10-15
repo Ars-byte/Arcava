@@ -18,6 +18,27 @@ single self-contained program with no runtime dependencies beyond an optional
 
 ![Arcava preview](previews/preview.svg)
 
+## Install
+
+Download the precompiled binary and drop it into your `PATH`:
+
+```sh
+mkdir -p ~/.local/bin
+wget https://github.com/Ars-byte/Arcava/releases/latest/download/Arcava -O ~/.local/bin/Arcava
+chmod +x ~/.local/bin/Arcava
+```
+
+Or download the full tarball (source + binary) and run it:
+
+```sh
+wget https://github.com/Ars-byte/Arcava/releases/latest/download/Arcava-v1.0.0.tar.gz
+tar xzf Arcava-v1.0.0.tar.gz
+cd Arcava-v1.0.0
+./Arcava
+```
+
+Make sure `~/.local/bin` is in your `PATH`.
+
 ## Build
 
 ```sh
