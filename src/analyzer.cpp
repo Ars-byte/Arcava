@@ -7,6 +7,7 @@ namespace {
 const int kFftSize = 4096;
 const double kLowFreq = 20.0;
 const double kHighFreq = 20000.0;
+const float kNoiseReduction = 0.77f;
 const float kGate = 0.02f;
 }
 
@@ -18,6 +19,10 @@ void Analyzer::configure(int bars) {
     bandLo_.resize(nb_);
     bandHi_.resize(nb_);
     raw_.assign(nb_, 0.0f);
+    prev_.assign(nb_, 0.0f);
+    cpeak_.assign(nb_, 0.0f);
+    cfall_.assign(nb_, 0.0f);
+    cmem_.assign(nb_, 0.0f);
 
     double ratio = kHighFreq / kLowFreq;
     for (int b = 0; b < nb_; b++) {
@@ -32,6 +37,14 @@ void Analyzer::configure(int bars) {
 
 void Analyzer::process(const std::complex<float>* spec, float dt, std::vector<float>& level) {
     if ((int)level.size() != nb_) level.assign(nb_, 0.0f);
+
+    float instFr = dt > 1e-4f ? 1.0f / dt : 60.0f;
+    framerate_ += (instFr - framerate_) / 64.0f;
+    framerate_ = std::min(300.0f, std::max(20.0f, framerate_));
+    float frmod = 66.0f / framerate_;
+    float gravityMod = std::pow(frmod, 2.5f) * 2.0f / kNoiseReduction;
+    float ik = kNoiseReduction / std::pow(frmod, 0.1f);
+    float ikInv = 1.0f - ik;
 
     float frameMax = 1e-6f;
     for (int b = 0; b < nb_; b++) {
@@ -49,6 +62,21 @@ void Analyzer::process(const std::complex<float>* spec, float dt, std::vector<fl
         if (r > 1.0f) r = 1.0f;
         if (r < kGate) r = 0.0f;
         else r = std::sqrt(r);
-        level[b] = std::min(1.0f, std::max(0.0f, r));
+
+        float v;
+        if (r < prev_[b]) {
+            v = cpeak_[b] * (1.0f - cfall_[b] * cfall_[b] * gravityMod);
+            if (v < 0.0f) v = 0.0f;
+            cfall_[b] += 0.028f;
+        } else {
+            cpeak_[b] = r;
+            cfall_[b] = 0.0f;
+            v = r;
+        }
+        prev_[b] = v;
+
+        v = cmem_[b] * ik + v * ikInv;
+        cmem_[b] = v;
+        level[b] = std::min(1.0f, std::max(0.0f, v));
     }
 }

@@ -16,5 +16,10 @@ private:
     std::vector<int> bandLo_;
     std::vector<int> bandHi_;
     std::vector<float> raw_;
+    std::vector<float> prev_;
+    std::vector<float> cpeak_;
+    std::vector<float> cfall_;
+    std::vector<float> cmem_;
     float peak_ = 1.0f;
+    float framerate_ = 60.0f;
 };
