@@ -115,7 +115,7 @@ int main(int argc, char** argv) {
 
         analyzer.configure(nb);
         analyzer.process(spec.data(), dt, level);
-        renderFrame(frame, level, width, rows, barWidth, gap);
+        renderFrame(frame, level, width, rows, barWidth);
         termWrite(frame.data(), frame.size());
 
         if (!audio.advance()) break;

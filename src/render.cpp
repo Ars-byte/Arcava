@@ -8,7 +8,7 @@ const char* kWhite = "\033[97m";
 }
 
 void renderFrame(std::string& buf, const std::vector<float>& level,
-                 int width, int rows, int barWidth, int gap) {
+                 int width, int rows, int barWidth) {
     int nb = (int)level.size();
     int totalBar = nb * barWidth;
     int gapBudget = std::max(0, width - totalBar);
