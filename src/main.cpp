@@ -60,6 +60,7 @@ int main(int argc, char** argv) {
     std::string color = "\033[38;5;231m";
 
     int opt;
+
     while ((opt = getopt(argc, argv, "r:c:d:b:w:g:h:C:")) != -1) {
         switch (opt) {
             case 'r': rate = std::atoi(optarg); break;
