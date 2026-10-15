@@ -41,8 +41,13 @@ void usage(const char* prog) {
 
 int main(int argc, char** argv) {
     for (int i = 1; i < argc; i++) {
-        if (std::string(argv[i]) == "--v" || std::string(argv[i]) == "--version") {
+        std::string a = argv[i];
+        if (a == "--v" || a == "-v" || a == "--version") {
             std::printf("%s %s\n", argv[0], kVersion);
+            return 0;
+        }
+        if (a == "--help" || a == "-h" || a == "-H") {
+            usage(argv[0]);
             return 0;
         }
     }
