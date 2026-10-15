@@ -14,6 +14,18 @@ single self-contained program with no runtime dependencies beyond an optional
    █   █   ▅   ▄      █   ▆  █   ▄    █   ▃   ▂   ▂   ▁   ▁      ▁   ▁      
 ```
 
+## Features
+
+- Real-time FFT spectrum analyzer at 60 fps
+- Logarithmic frequency bands (50 Hz - 10 kHz)
+- cava-inspired falloff and smoothing for a natural bounce
+- Auto-gain peak tracking
+- Full-terminal-height rendering, no scroll jitter
+- Bars auto-sized to the terminal width, or fixed with `-b`
+- Adjustable bar width and spacing
+- Resizes live on `SIGWINCH`
+- Reads live system audio, or any PCM source from stdin
+
 ## Previews
 
 ![Arcava preview](previews/preview.svg)
