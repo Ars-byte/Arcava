@@ -7,6 +7,7 @@ namespace {
 const int kFftSize = 4096;
 const double kLowFreq = 20.0;
 const double kHighFreq = 20000.0;
+const float kGate = 0.02f;
 }
 
 Analyzer::Analyzer(int rate) : rate_(rate) {}
@@ -46,6 +47,8 @@ void Analyzer::process(const std::complex<float>* spec, float dt, std::vector<fl
     for (int b = 0; b < nb_; b++) {
         float r = raw_[b] / peak_;
         if (r > 1.0f) r = 1.0f;
+        if (r < kGate) r = 0.0f;
+        else r = std::sqrt(r);
         level[b] = std::min(1.0f, std::max(0.0f, r));
     }
 }
