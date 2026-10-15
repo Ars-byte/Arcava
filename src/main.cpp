@@ -20,23 +20,32 @@
 namespace {
 const float kPi = 3.14159265358979323846f;
 const int kFps = 60;
+const char* kVersion = "1.0.0";
 
 void usage(const char* prog) {
     std::fprintf(stderr,
         "Usage: %s [options]\n"
+        "  -v, --v        show version\n"
+        "  --version      show version\n"
+        "  -h             show this help\n"
         "  -r <rate>      sample rate (default 44100)\n"
         "  -c <channels>  channels (default 2)\n"
         "  -d <device>    parec device (default @DEFAULT_MONITOR@)\n"
         "  -b <bars>      number of bars, 0 = auto (default 0)\n"
         "  -w <width>     bar width in cells (default 1)\n"
         "  -g <gap>       min gap between bars in cells (default 1)\n"
-        "  -h             show this help\n"
         "If stdin is not a tty, raw s16le PCM is read from stdin.\n",
         prog);
 }
 }
 
 int main(int argc, char** argv) {
+    for (int i = 1; i < argc; i++) {
+        if (std::string(argv[i]) == "--v" || std::string(argv[i]) == "--version") {
+            std::printf("%s %s\n", argv[0], kVersion);
+            return 0;
+        }
+    }
     int rate = 44100;
     int channels = 2;
     int bars = 0;
@@ -54,7 +63,7 @@ int main(int argc, char** argv) {
             case 'w': barWidth = std::atoi(optarg); break;
             case 'g': gap = std::atoi(optarg); break;
             case 'h': usage(argv[0]); return 0;
-            default: usage(argv[0]); return 1;
+            case '?': usage(argv[0]); return 1;
         }
     }
     if (rate <= 0) rate = 44100;
