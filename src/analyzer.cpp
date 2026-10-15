@@ -5,8 +5,8 @@
 
 namespace {
 const int kFftSize = 4096;
-const double kLowFreq = 20.0;
-const double kHighFreq = 20000.0;
+const double kLowFreq = 50.0;
+const double kHighFreq = 10000.0;
 const float kNoiseReduction = 0.77f;
 const float kGate = 0.02f;
 }
